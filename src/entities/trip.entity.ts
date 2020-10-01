@@ -14,7 +14,7 @@ export class Trip {
     @Column('varchar', { length: 20 })
     public route_id: string;
 
-    @ManyToOne(() => Route, a => a.trips)
+    @ManyToOne(() => Route, a => a.trips, { eager: true })
     @JoinColumn({ name: 'route_id' })
     public route: Route;
 

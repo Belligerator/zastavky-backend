@@ -20,4 +20,13 @@ export class AppController {
                 throw new HttpException({ error: error?.message, message: 'Cannot follow opportunity.' }, 400);
             });
     }
+    
+    @Get('test2')
+    public test2(): Promise<StopTime[]> {
+        return this.appService.test2()
+            .catch(error => {
+                console.error(`test error`, error);
+                throw new HttpException({ error: error?.message, message: 'Cannot follow opportunity.' }, 400);
+            });
+    }
 }

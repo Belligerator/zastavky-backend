@@ -29,8 +29,12 @@ export class AppService {
             // .leftJoin('trip.service', 'calendar')
             // .where('stop_times.stop_id = "U953Z102"')
             // .orderBy('departure_time')
-            .take(5);
+            .take(1);
         console.log(qBuilder.getSql());
         return await qBuilder.getMany();
+    }
+
+    public async test2(): Promise<StopTime[]> {
+        return await this.stopTimesRepository.find({ relations: ['trip'], take: 1 });
     }
 }
