@@ -1,8 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Trip } from './trip.entity';
 
 @Entity({ name: 'stop_times' })
 export class StopTime {
+
+    @PrimaryGeneratedColumn()
+    public id: number;
 
     @Index()
     @Column({ length: 11 })

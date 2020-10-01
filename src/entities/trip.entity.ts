@@ -7,7 +7,7 @@ import { Route } from './route.entity';
 export class Trip {
 
     @Index()
-    @PrimaryColumn('mediumint', { length: 9 })
+    @PrimaryColumn('mediumint')
     public trip_id: number;
 
     @Index()
