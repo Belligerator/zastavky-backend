@@ -1,5 +1,4 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { StopTime } from './stop-time.entity';
 import { Trip } from './trip.entity';
 
 @Entity({ name: 'calendar' })

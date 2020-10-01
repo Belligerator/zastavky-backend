@@ -11,7 +11,7 @@ export class Trip {
     public trip_id: number;
 
     @Index()
-    @Column('varchar', { nullable: true, length: 20 })
+    @Column('varchar', { length: 20 })
     public route_id: string;
 
     @ManyToOne(() => Route, a => a.trips)
