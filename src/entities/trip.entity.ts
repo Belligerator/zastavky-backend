@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { StopTime } from './stop-time.entity';
 import { Calendar } from './calendar.entity';
 import { Route } from './route.entity';
@@ -7,7 +7,7 @@ import { Route } from './route.entity';
 export class Trip {
 
     @Index()
-    @PrimaryColumn('mediumint')
+    @PrimaryGeneratedColumn()
     public trip_id: number;
 
     @Index()

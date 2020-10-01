@@ -20,15 +20,15 @@ export class AppService {
         const qBuilder: SelectQueryBuilder<StopTime> = await this.stopTimesRepository.createQueryBuilder('stop_times');
         qBuilder
             .select([
-                'stop_times.departure_time',
+                // 'stop_times.departure_time',
                 'route.route_short_name',
                 'route.route_long_name',
             ])
             .leftJoin('stop_times.trip', 'trip')
             .leftJoin('trip.route', 'route')
-            .leftJoin('trip.service', 'calendar')
-            .where('stop_times.stop_id = "U953Z102"')
-            .orderBy('departure_time')
+            // .leftJoin('trip.service', 'calendar')
+            // .where('stop_times.stop_id = "U953Z102"')
+            // .orderBy('departure_time')
             .take(5);
         console.log(qBuilder.getSql());
         return await qBuilder.getMany();

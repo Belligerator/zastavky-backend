@@ -8,7 +8,7 @@ export class StopTime {
     public id: number;
 
     @Index()
-    @Column('mediumint')
+    @Column()
     public trip_id: number;
 
     @ManyToOne(() => Trip, a => a.stopTimes)
