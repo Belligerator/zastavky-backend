@@ -19,22 +19,13 @@ export class AppService {
     public async test(): Promise<StopTime[]> {
         const qBuilder: SelectQueryBuilder<StopTime> = await this.stopTimesRepository.createQueryBuilder('stop_times');
         qBuilder
-            .select([
-                // 'stop_times.departure_time',
-                'route.route_short_name',
-                'route.route_long_name',
-            ])
-            .leftJoin('stop_times.trip', 'trip')
-            .leftJoin('trip.route', 'route')
-            // .leftJoin('trip.service', 'calendar')
-            // .where('stop_times.stop_id = "U953Z102"')
-            // .orderBy('departure_time')
-            .take(1);
-        console.log(qBuilder.getSql());
+            .leftJoinAndSelect('stop_times.trip', 'trip')
+            .leftJoinAndSelect('trip.route', 'route')
+            .leftJoinAndSelect('trip.service', 'calendar')
+            .where('stop_times.stop_id = "U953Z102"')
+            .andWhere('calendar.monday = 1')
+            .orderBy('stop_times.departure_time')
+            .take(5);
         return await qBuilder.getMany();
-    }
-
-    public async test2(): Promise<StopTime[]> {
-        return await this.stopTimesRepository.find({ relations: ['trip'], take: 1 });
     }
 }
