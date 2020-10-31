@@ -14,16 +14,16 @@ export const VERSION: string = '0.0.1';
         TypeOrmModule.forRoot({
 
             type: 'mysql',
-            host: process.env.MYSQL_HOST,
+            host: process.env.MYSQL_HOST || 'localhost',
             port: 3306,
-            database: process.env.MYSQL_DATABASE,
-            username: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DATABASE || 'zastavky',
+            username: process.env.MYSQL_USER || 'root',
+            password: process.env.MYSQL_PASSWORD || 'Heslo123,',
             entities: [
                 __dirname + '/endpoints/**/*.entity{.ts,.js}',
                 __dirname + '/entities/**/*.entity{.ts,.js}',
             ],
-            synchronize: false,   // todo nepouzivat na produkci
+            synchronize: true,   // todo nepouzivat na produkci
         }),
         TypeOrmModule.forFeature([
             Calendar,
