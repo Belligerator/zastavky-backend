@@ -9,7 +9,7 @@ export class RssService {
     public feed =  new RSS({
         title: 'Muj feed',
         description: 'Muj prvni rss feed.',
-        feed_url: 'http://belligerator.cz/feeds',
+        feed_url: 'http://belligerator.cz/api/feeds',
         site_url : 'http://belligerator.cz',
     });
 
@@ -17,7 +17,7 @@ export class RssService {
         this.feed.item({
             title: 'Feed 1',
             description : 'Feed 1 popis',
-            url : 'http://belligerator.cz/feeds/1',
+            url : 'http://belligerator.cz/api/feeds/1',
             guid : new Date().getTime() + '',
             date: new Date(),
         });
