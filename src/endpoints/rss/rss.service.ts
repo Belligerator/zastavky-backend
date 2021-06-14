@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 const RSS = require('rss');
-const fs = require('fs');
 
 @Injectable()
 export class RssService {
@@ -13,27 +12,28 @@ export class RssService {
         site_url : 'http://belligerator.cz:5015',
     });
 
+    private counter: number = 0;
+
     constructor() {
-        this.feed.item({
-            title: 'Feed 1',
-            description : 'Feed 1 popis',
-            url : 'http://belligerator.cz:5015/api/feeds/1',
-            guid : new Date().getTime() + '',
-            date: new Date(),
-        });
-        this.feed.item({
-            title: 'Feed 2',
-            description : 'Feed 2 popis',
-            url : 'http://belligerator.cz:5015/api/feeds/2',
-            guid : new Date().getTime() + '',
-            date: new Date(),
-        });
+        this.addFeed();
+        this.addFeed();
     }
 
-    public getHello(response): any {
+    public getFeed(response): any {
         var xml = this.feed.xml({indent: true});
         console.log(xml);
         response.send(xml);
+    }
+
+    public addFeed(): any {
+        this.counter++;
+        this.feed.item({
+            title: 'Feed ' + this.counter,
+            description : `<strong>Feed ${this.counter}</strong> popis`,
+            url : 'http://belligerator.cz:5015/api/feeds/' + this.counter,
+            guid : this.counter,
+            date: new Date(),
+        });
     }
 
 }
