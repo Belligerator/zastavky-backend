@@ -10,7 +10,7 @@ export class RssService {
         title: 'Muj feed',
         description: 'Muj prvni rss feed.',
         feed_url: 'http://belligerator.cz:5015/api/feeds',
-        site_url : 'http://belligerator.cz',
+        site_url : 'http://belligerator.cz:5015',
     });
 
     constructor() {
@@ -18,6 +18,13 @@ export class RssService {
             title: 'Feed 1',
             description : 'Feed 1 popis',
             url : 'http://belligerator.cz:5015/api/feeds/1',
+            guid : new Date().getTime() + '',
+            date: new Date(),
+        });
+        this.feed.item({
+            title: 'Feed 2',
+            description : 'Feed 2 popis',
+            url : 'http://belligerator.cz:5015/api/feeds/2',
             guid : new Date().getTime() + '',
             date: new Date(),
         });
