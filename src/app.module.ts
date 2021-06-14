@@ -6,6 +6,8 @@ import { Calendar } from './entities/calendar.entity';
 import { Route } from './entities/route.entity';
 import { StopTime } from './entities/stop-time.entity';
 import { Trip } from './entities/trip.entity';
+import { RssService } from './endpoints/rss/rss.service';
+import { RssController } from './endpoints/rss/rss.controller';
 
 export const VERSION: string = '0.0.1';
 
@@ -32,8 +34,8 @@ export const VERSION: string = '0.0.1';
             Trip,
         ]),
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [AppController, RssController],
+    providers: [AppService, RssService],
 })
 export class AppModule {
 }
