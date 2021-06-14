@@ -17,6 +17,7 @@ export class RssService {
     constructor() {
         this.addFeed();
         this.addFeed();
+        this.addFeed();
     }
 
     public getFeed(response): any {
@@ -25,8 +26,9 @@ export class RssService {
         response.send(xml);
     }
 
-    public addFeed(): any {
+    public addFeed(): string {
         this.counter++;
+        console.log('Adding feed - ' + this.counter);
         this.feed.item({
             title: 'Feed ' + this.counter,
             description : `<strong>Feed ${this.counter}</strong> popis`,
@@ -34,6 +36,7 @@ export class RssService {
             guid : this.counter,
             date: new Date(),
         });
+        return 'Adding feed - ' + this.counter;
     }
 
 }

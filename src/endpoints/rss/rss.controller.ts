@@ -18,8 +18,8 @@ export class RssController {
     }
 
     @Get('feeds/add')
-    public addFeed(): void {
-        this.rssService.addFeed();
+    public addFeed(): string {
+        return this.rssService.addFeed();
     }
 
 }
