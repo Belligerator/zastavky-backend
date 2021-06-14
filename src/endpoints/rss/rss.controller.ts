@@ -12,14 +12,16 @@ export class RssController {
         return this.rssService.getFeed(response);
     }
 
+    @Get('feeds/add')
+    public addFeed(): string {
+        return this.rssService.addFeed();
+    }
+
     @Get('feeds/:id')
     public getFeedDetail(@Param('id') feedId: string): string {
         return feedId;
     }
 
-    @Get('feeds/add')
-    public addFeed(): string {
-        return this.rssService.addFeed();
-    }
+
 
 }
