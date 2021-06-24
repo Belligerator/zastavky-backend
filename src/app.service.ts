@@ -27,11 +27,9 @@ export class AppService {
         return VERSION;
     }
 
-    public async getTimesByStopId(stopId: string, timestamp: string): Promise<StopTime[]> {
-        const now: moment.Moment = moment(timestamp);
-        console.log('time: ' + now);
-        const timeNow: string = now.format('HH:mm');
-        const day: number = now.day();
+    public async getTimesByStopId(stopId: string, time: string, day: number): Promise<StopTime[]> {
+        console.log('time: ' + time);
+        console.log('day: ' + this.days[day]);
         console.log('Find stop: ', stopId);
         const qBuilder: SelectQueryBuilder<StopTime> = await this.stopTimesRepository
             .createQueryBuilder('stop_times')
@@ -39,7 +37,7 @@ export class AppService {
             .leftJoinAndSelect('trip.route', 'route')
             .leftJoinAndSelect('trip.service', 'calendar')
             .where(`stop_times.stop_id = "${stopId}"`)
-            .andWhere(`stop_times.departure_time >= '${timeNow}'`)
+            .andWhere(`stop_times.departure_time >= '${time}'`)
             .andWhere(`calendar.${this.days[day]} = 1`)
             .orderBy('stop_times.departure_time')
             .take(5);
@@ -47,7 +45,7 @@ export class AppService {
         const stopTimes: StopTime[] = await qBuilder.getMany();
         stopTimes.forEach(st => {
             const dummyDate: string = '2020-01-01T';
-            const timeNow: string = now.format('HH:mm:ss');
+            const timeNow: string = time;
             const a: moment.Moment = moment(dummyDate + st.departure_time);
             const b: moment.Moment = moment(dummyDate + timeNow);
             const diff: number = a.diff(b, 'minutes');

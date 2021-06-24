@@ -13,8 +13,8 @@ export class AppController {
     }
 
     @Get('by-stop-id/:id')
-    public test(@Param('id') stopId: string, @Query('t') timestamp: string): Promise<StopTime[]> {
-        return this.appService.getTimesByStopId(stopId, timestamp)
+    public test(@Param('id') stopId: string, @Query('t') time: string, @Query('d') day: string): Promise<StopTime[]> {
+        return this.appService.getTimesByStopId(stopId, time, Number(day))
             .catch(error => {
                 console.error(`test error`, error);
                 throw new HttpException({ error: error?.message, message: 'Cannot get stop times.' }, 400);
