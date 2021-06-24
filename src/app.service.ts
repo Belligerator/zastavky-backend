@@ -38,14 +38,6 @@ export class AppService {
             .leftJoinAndSelect('stop_times.trip', 'trip')
             .leftJoinAndSelect('trip.route', 'route')
             .leftJoinAndSelect('trip.service', 'calendar')
-            // .select([
-            //     'stop_times.id',
-            //     'stop_times.departure_time',
-            //     'trip.trip_id',
-            //     'route.route_id',
-            //     'route.route_short_name',
-            //     'route.route_long_name',
-            // ])
             .where(`stop_times.stop_id = "${stopId}"`)
             .andWhere(`stop_times.departure_time >= '${timeNow}'`)
             .andWhere(`calendar.${this.days[day]} = 1`)

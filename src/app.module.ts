@@ -25,7 +25,7 @@ export const VERSION: string = '0.0.1';
                 __dirname + '/endpoints/**/*.entity{.ts,.js}',
                 __dirname + '/entities/**/*.entity{.ts,.js}',
             ],
-            synchronize: true,   // todo nepouzivat na produkci
+            synchronize: false,   // todo nepouzivat na produkci
         }),
         TypeOrmModule.forFeature([
             Calendar,

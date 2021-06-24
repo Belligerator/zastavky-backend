@@ -4,8 +4,8 @@ import { Trip } from './trip.entity';
 @Entity({ name: 'calendar' })
 export class Calendar {
 
-    @PrimaryColumn('tinyint')
-    public service_id: number;
+    @PrimaryColumn()
+    public service_id: string;
 
     @Column('tinyint', { nullable: true })
     public monday: boolean;

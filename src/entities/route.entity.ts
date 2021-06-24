@@ -7,7 +7,7 @@ export class Route {
     @PrimaryColumn('varchar', { length: 20 })
     public route_id: string;
 
-    @Column('tinyint', { nullable: true })
+    @Column({ nullable: true })
     public agency_id: number;
 
     @Column('varchar', { nullable: true, length: 255 })
@@ -16,8 +16,8 @@ export class Route {
     @Column('varchar', { nullable: true, length: 255 })
     public route_long_name: string;
 
-    @Column('smallint', { nullable: true })
-    public wednesday: number;
+    @Column({ nullable: true })
+    public route_type: number;
 
     @Column('varchar', { nullable: true, length: 10 })
     public route_color: string;
@@ -27,6 +27,15 @@ export class Route {
 
     @Column('varchar', { nullable: true, length: 255 })
     public route_url: string;
+
+    @Column({ nullable: true })
+    public is_night: boolean;
+
+    @Column({ nullable: true })
+    public is_regional: boolean;
+
+    @Column({ nullable: true })
+    public is_substitute_transport: boolean;
 
     @OneToMany(() => Trip, a => a.route)
     public trips?: Array<Trip>;

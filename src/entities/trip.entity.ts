@@ -29,8 +29,8 @@ export class Trip {
     @Column('varchar', { nullable: true, length: 255 })
     public trip_headsign: string;
 
-    @Column('smallint', { nullable: true })
-    public stop_sequence: number;
+    @Column('varchar', { nullable: true, length: 255 })
+    public trip_short_name: string;
 
     @Column('tinyint', { nullable: true })
     public shape_id: number;

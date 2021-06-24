@@ -9,7 +9,7 @@ export class StopTime {
 
     @Index()
     @Column()
-    public trip_id: number;
+    public trip_id: string;
 
     @ManyToOne(() => Trip, a => a.stopTimes)
     @JoinColumn({ name: 'trip_id' })
@@ -34,5 +34,16 @@ export class StopTime {
 
     @Column('tinyint', { nullable: true })
     public drop_off_type: number;
+    @Column({ nullable: true })
+    public stop_headsign: string;
+
+    @Column({ nullable: true })
+    public shape_dist_traveled: number;
+
+    @Column({ nullable: true })
+    public trip_operation_type: number;
+
+    @Column({ nullable: true })
+    public bikes_allowed: boolean;
 
 }
