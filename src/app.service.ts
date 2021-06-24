@@ -28,7 +28,7 @@ export class AppService {
     }
 
     public async getTimesByStopId(stopId: string, timestamp: string): Promise<StopTime[]> {
-        const now: moment.Moment = moment(Number(timestamp));
+        const now: moment.Moment = moment(timestamp);
         console.log('time: ' + now);
         const timeNow: string = now.format('HH:mm');
         const day: number = now.day();
