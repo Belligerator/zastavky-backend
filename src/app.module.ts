@@ -8,8 +8,9 @@ import { StopTime } from './entities/stop-time.entity';
 import { Trip } from './entities/trip.entity';
 import { RssService } from './endpoints/rss/rss.service';
 import { RssController } from './endpoints/rss/rss.controller';
+import { Stop } from './entities/stop.entity';
 
-export const VERSION: string = '0.0.1';
+export const VERSION: string = '0.0.2';
 
 @Module({
     imports: [
@@ -32,6 +33,7 @@ export const VERSION: string = '0.0.1';
             Route,
             StopTime,
             Trip,
+            Stop
         ]),
     ],
     controllers: [AppController, RssController],
