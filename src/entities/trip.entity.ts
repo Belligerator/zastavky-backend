@@ -1,4 +1,13 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { StopTime } from './stop-time.entity';
 import { Calendar } from './calendar.entity';
 import { Route } from './route.entity';
@@ -7,39 +16,34 @@ import { Route } from './route.entity';
 export class Trip {
 
     @Index()
-    @PrimaryGeneratedColumn()
-    public trip_id: number;
-
-    @Index()
-    @Column('varchar', { length: 20 })
+    @Column({ nullable: true })
     public route_id: string;
 
-    @ManyToOne(() => Route, a => a.trips, { eager: true })
-    @JoinColumn({ name: 'route_id' })
-    public route: Route;
+    @Index()
+    @Column({ nullable: true })
+    public service_id: string;
 
     @Index()
-    @Column('tinyint', { nullable: true })
-    public service_id: number;
+    @PrimaryColumn()
+    public trip_id: string;
 
-    @ManyToOne(() => Calendar, a => a.trips)
-    @JoinColumn({ name: 'service_id' })
-    public service: Calendar;
-
-    @Column('varchar', { nullable: true, length: 255 })
+    @Column({ nullable: true })
     public trip_headsign: string;
 
-    @Column('varchar', { nullable: true, length: 255 })
+    @Column({ nullable: true })
     public trip_short_name: string;
 
     @Column('tinyint', { nullable: true })
-    public shape_id: number;
+    public direction_id: number;
 
-    @Column('varchar', { nullable: true, length: 20 })
+    @Column({ nullable: true})
     public block_id: string;
 
+    @Column({ nullable: true })
+    public shape_id: string;
+
     @Column('tinyint', { nullable: true })
-    public direction_id: number;
+    public wheelchair_accessible: boolean;
 
     @Column('tinyint', { nullable: true })
     public bikes_allowed: boolean;
@@ -47,7 +51,17 @@ export class Trip {
     @Column('tinyint', { nullable: true })
     public exceptional: boolean;
 
+    // Relations
+
     @OneToMany(() => StopTime, a => a.trip)
     public stopTimes?: Array<StopTime>;
+
+    @ManyToOne(() => Calendar, a => a.trips, { eager: true })
+    @JoinColumn({ name: 'service_id' })
+    public service: Calendar;
+
+    @ManyToOne(() => Route, a => a.trips, { eager: true })
+    @JoinColumn({ name: 'route_id' })
+    public route: Route;
 
 }

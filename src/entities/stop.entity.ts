@@ -11,11 +11,11 @@ export class Stop {
     @Column()
     public stop_name: string;
 
-    @Column('decimal')
-    public stop_lat: string;
+    @Column({type: 'decimal', precision: 7, scale: 5})
+    public stop_lat: number;
 
-    @Column('decimal')
-    public stop_lon: string;
+    @Column({type: 'decimal', precision: 7, scale: 5})
+    public stop_lon: number;
 
     @Column({ nullable: true })
     public zone_id: string;
