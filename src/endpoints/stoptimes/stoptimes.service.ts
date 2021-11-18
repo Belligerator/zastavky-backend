@@ -9,6 +9,7 @@ import { Trip } from '../../entities/trip.entity';
 import { Calendar } from '../../entities/calendar.entity';
 import { Route } from '../../entities/route.entity';
 import moment = require('moment');
+import { StoptimesResponse } from '../../models/stoptimes-response';
 
 const extract = require('extract-zip');
 const request = require('superagent');
@@ -81,31 +82,24 @@ export class StoptimesService {
         console.log('Import completed: ' + (t1 - t0) + ' ms');
     }
 
-    public async getTimesByCoordinates(date: string, lat: number, lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[], stoptimesNext: StopTime[] }> {
+    public async getTimesByCoordinates(date: string, lat: number, lon: number): Promise<StoptimesResponse[]> {
         const res: Stop[] = await this.stopsRepository.query(
             `SELECT *, ST_Distance_Sphere( point ('${lon}', '${lat}'), point(stop_lon, stop_lat)) AS distance_in_meters
             FROM stops
             WHERE location_type = 0
-            ORDER BY distance_in_meters ASC LIMIT 2;`);
+            ORDER BY distance_in_meters ASC LIMIT 5;`);
+        let response: StoptimesResponse[] = [];
         if (res?.length) {
-            const stoptimes: StopTime[] = await this.getTimesByStopId(res[0].stop_id, date);
-            let stoptimesNext: StopTime[] = [];
-            if (res.length > 1) {
-                stoptimesNext = await this.getTimesByStopId(res[1].stop_id, date);
+            for (let item of res) {
+                const stoptimes: StopTime[] = await this.getTimesByStopId(item.stop_id, date);
+                response.push({
+                    station: res[0].stop_name,
+                    distance: res[0].distance_in_meters,
+                    stoptimes: stoptimes,
+                });
             }
-            return {
-                station: res[0].stop_name,
-                distance: res[0].distance_in_meters,
-                stoptimes: stoptimes,
-                stoptimesNext: stoptimesNext,
-            };
         }
-        return {
-            station: '',
-            distance: 0,
-            stoptimes: [],
-            stoptimesNext: [],
-        };
+        return response;
     }
 
     public async getTimesByStopId(stopId: string, dateInput: string): Promise<StopTime[]> {

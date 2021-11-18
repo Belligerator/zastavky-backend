@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ExtendedHttpException } from '../../models/http-exception';
 import { StopTime } from '../../entities/stop-time.entity';
 import { StoptimesService } from './stoptimes.service';
+import { StoptimesResponse } from '../../models/stoptimes-response';
 
 @Controller('stoptimes')
 export class StoptimesController {
@@ -41,7 +42,7 @@ export class StoptimesController {
     }
 
     @Post('by-coordinates')
-    public byCoordinates(@Body('date') date: string, @Body('lat') lat: number, @Body('lon') lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[], stoptimesNext: StopTime[] }> {
+    public byCoordinates(@Body('date') date: string, @Body('lat') lat: number, @Body('lon') lon: number): Promise<StoptimesResponse[]> {
         return this.stoptimesService.getTimesByCoordinates(date, lat, lon)
             .catch(error => {
                 throw new ExtendedHttpException(
