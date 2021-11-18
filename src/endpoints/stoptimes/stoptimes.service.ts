@@ -93,8 +93,8 @@ export class StoptimesService {
             for (let item of res) {
                 const stoptimes: StopTime[] = await this.getTimesByStopId(item.stop_id, date);
                 response.push({
-                    station: res[0].stop_name,
-                    distance: res[0].distance_in_meters,
+                    station: `${item.stop_name} ${item.platform_code ? '(' + item.platform_code + ')' : ''}`,
+                    distance: Math.round(item.distance_in_meters),
                     stoptimes: stoptimes,
                 });
             }
