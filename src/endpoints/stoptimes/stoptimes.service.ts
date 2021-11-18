@@ -93,7 +93,7 @@ export class StoptimesService {
             for (let item of res) {
                 const stoptimes: StopTime[] = await this.getTimesByStopId(item.stop_id, date);
                 response.push({
-                    station: `${item.stop_name} ${item.platform_code ? '(' + item.platform_code + ')' : ''}`,
+                    station: `${item.stop_name}${item.platform_code ? ' (' + item.platform_code + ')' : ''}`,
                     distance: Math.round(item.distance_in_meters),
                     stoptimes: stoptimes,
                 });
@@ -125,11 +125,23 @@ export class StoptimesService {
 
         const stopTimes: StopTime[] = await qBuilder.getMany();
         stopTimes.forEach(st => {
-            const dummyDate: string = '2020-01-01T';
-            const timeNow: string = time;
-            const a: moment.Moment = moment(dummyDate + st.departure_time);
-            const b: moment.Moment = moment(dummyDate + timeNow);
-            const diff: number = a.diff(b, 'minutes');
+            let diff: string = 'X';
+            if (st.departure_time) {
+                try {
+                    const split: string[] = st.departure_time.split(':');
+                    const h: number = Number(split[0]) % 24;
+                    const m: string = split[1];
+                    const s: string = split[2];
+                    const dummyDate: string = `2020-01-01T${h}:${m}:${s}`;
+                    const timeNow: string = time;
+                    const a: moment.Moment = moment(dummyDate + st.departure_time);
+                    const b: moment.Moment = moment(dummyDate + timeNow);
+                    diff = a.diff(b, 'minutes') + '';
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
             st.departure_time = st.departure_time.substring(0, 5) + ` (za ${diff} min)`;
         });
         return stopTimes;
