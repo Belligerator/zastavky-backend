@@ -71,7 +71,7 @@ export class StoptimesService {
         await this.stopTimesRepository.clear();
         await this.calendarRepository.query('SET FOREIGN_KEY_CHECKS = 1;');
         console.log('DB deleted');
-	console.log(await this.calendarRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/calendar.txt' INTO TABLE calendar FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+	    console.log(await this.calendarRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/calendar.txt' INTO TABLE calendar FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
         console.log(await this.routeRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/routes.txt' INTO TABLE routes FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
         console.log(await this.stopsRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/stops.txt' INTO TABLE stops FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
         console.log(await this.tripsRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/trips.txt' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
@@ -81,24 +81,30 @@ export class StoptimesService {
         console.log('Import completed: ' + (t1 - t0) + ' ms');
     }
 
-    public async getTimesByCoordinates(date: string, lat: number, lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[] }> {
+    public async getTimesByCoordinates(date: string, lat: number, lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[], stoptimesNext: StopTime[] }> {
         const res: Stop[] = await this.stopsRepository.query(
             `SELECT *, ST_Distance_Sphere( point ('${lon}', '${lat}'), point(stop_lon, stop_lat)) AS distance_in_meters
             FROM stops
             WHERE location_type = 0
-            ORDER BY distance_in_meters ASC LIMIT 1;`);
+            ORDER BY distance_in_meters ASC LIMIT 2;`);
         if (res?.length) {
             const stoptimes: StopTime[] = await this.getTimesByStopId(res[0].stop_id, date);
+            let stoptimesNext: StopTime[] = [];
+            if (res.length > 1) {
+                stoptimesNext = await this.getTimesByStopId(res[1].stop_id, date);
+            }
             return {
                 station: res[0].stop_name,
                 distance: res[0].distance_in_meters,
                 stoptimes: stoptimes,
+                stoptimesNext: stoptimesNext,
             };
         }
         return {
             station: '',
             distance: 0,
             stoptimes: [],
+            stoptimesNext: [],
         };
     }
 

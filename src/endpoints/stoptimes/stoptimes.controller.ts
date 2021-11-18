@@ -41,7 +41,7 @@ export class StoptimesController {
     }
 
     @Post('by-coordinates')
-    public byCoordinates(@Body('date') date: string, @Body('lat') lat: number, @Body('lon') lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[] }> {
+    public byCoordinates(@Body('date') date: string, @Body('lat') lat: number, @Body('lon') lon: number): Promise<{ station: string, distance: number, stoptimes: StopTime[], stoptimesNext: StopTime[] }> {
         return this.stoptimesService.getTimesByCoordinates(date, lat, lon)
             .catch(error => {
                 throw new ExtendedHttpException(
