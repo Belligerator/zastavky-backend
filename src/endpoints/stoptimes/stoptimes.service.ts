@@ -42,10 +42,10 @@ export class StoptimesService {
             .on('error', (error) => {
                 console.error('Error during zip downloading', error);
             })
-            .pipe(fs.createWriteStream(__dirname + '/data.zip'))
+	    .pipe(fs.createWriteStream(process.cwd() + '/data.zip'))
             .on('finish', () => {
-                console.log('Zip downloaded');
-                extract(__dirname + '/data.zip', { dir: __dirname + '/data' })
+	    	console.log('Zip downloaded', process.cwd());
+		extract(process.cwd() + '/data.zip', { dir: process.cwd() + '/data' })
                     .then((data) => {
                         console.log('Zip extracted');
                         this.importDatabase();
@@ -71,11 +71,11 @@ export class StoptimesService {
         await this.stopTimesRepository.clear();
         await this.calendarRepository.query('SET FOREIGN_KEY_CHECKS = 1;');
         console.log('DB deleted');
-        console.log(await this.calendarRepository.query(`LOAD DATA LOCAL INFILE './dist/data/calendar.txt' INTO TABLE calendar FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
-        console.log(await this.routeRepository.query(`LOAD DATA LOCAL INFILE './dist/data/routes.txt' INTO TABLE routes FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
-        console.log(await this.stopsRepository.query(`LOAD DATA LOCAL INFILE './dist/data/stops.txt' INTO TABLE stops FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
-        console.log(await this.tripsRepository.query(`LOAD DATA LOCAL INFILE './dist/data/trips.txt' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
-        console.log(await this.stopTimesRepository.query(`LOAD DATA LOCAL INFILE './dist/data/stop_times.txt' INTO TABLE stop_times FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+	console.log(await this.calendarRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/calendar.txt' INTO TABLE calendar FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+        console.log(await this.routeRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/routes.txt' INTO TABLE routes FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+        console.log(await this.stopsRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/stops.txt' INTO TABLE stops FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+        console.log(await this.tripsRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/trips.txt' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
+        console.log(await this.stopTimesRepository.query(`LOAD DATA LOCAL INFILE '${process.cwd()}/data/stop_times.txt' INTO TABLE stop_times FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\\r\\n' IGNORE 1 LINES;`));
 
         let t1 = moment().valueOf();
         console.log('Import completed: ' + (t1 - t0) + ' ms');
