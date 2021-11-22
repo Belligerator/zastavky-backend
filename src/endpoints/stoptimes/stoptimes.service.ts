@@ -95,6 +95,8 @@ export class StoptimesService {
                 response.push({
                     station: `${item.stop_name}${item.platform_code ? ' (' + item.platform_code + ')' : ''}`,
                     distance: Math.round(item.distance_in_meters),
+                    lat: item.stop_lat,
+                    lng: item.stop_lon,
                     stoptimes: stoptimes,
                 });
             }
