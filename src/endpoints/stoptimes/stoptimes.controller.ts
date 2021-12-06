@@ -1,28 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ExtendedHttpException } from '../../models/http-exception';
 import { StopTime } from '../../entities/stop-time.entity';
 import { StoptimesService } from './stoptimes.service';
 import { StoptimesResponse } from '../../models/stoptimes-response';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard(['basic']))
 @Controller('stoptimes')
 export class StoptimesController {
     constructor(private readonly stoptimesService: StoptimesService) {
-    }
-
-    @Get('start-job')
-    public startJob(): Promise<void> {
-        return this.stoptimesService.pidOpendataDownloadingJob()
-            .catch(error => {
-                console.error(`test error`, error);
-                throw new ExtendedHttpException(
-                    error,
-                    `GET /start-job ERROR:`,
-                    {
-                        error: error?.message,
-                        message: error?.message || 'Cannot start job.',
-                        title: error?.title || 'Error.',
-                    }, error.statusCode || 500);
-            });
     }
 
     @Get('by-stop-id/:id')
