@@ -1,5 +1,3 @@
-import { CronExpression } from '@nestjs/schedule';
-
 console.log('Start constants');
 
 // nastaveni DB

@@ -14,35 +14,35 @@ import { ConfigModule } from '@nestjs/config';
 import { StoptimesController } from './endpoints/stoptimes/stoptimes.controller';
 import { StoptimesService } from './endpoints/stoptimes/stoptimes.service';
 import { CronJobsService } from './services/cron-jobs.service';
+import { ServerRestarts } from './entities/server-restarts.entity';
+import * as connectionOptions from './ormconfig';
+import { BasicStrategy } from './endpoints/auth/strategies/basic.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
         ScheduleModule.forRoot(),
-        TypeOrmModule.forRoot({
-
-            type: 'mysql',
-            host: process.env.MYSQL_HOST,
-            port: 3306,
-            database: process.env.MYSQL_DATABASE,
-            username: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            entities: [
-                __dirname + '/endpoints/**/*.entity{.ts,.js}',
-                __dirname + '/entities/**/*.entity{.ts,.js}',
-            ],
-            synchronize: false,   // todo nepouzivat na produkci
-        }),
+        TypeOrmModule.forRoot(connectionOptions),
         TypeOrmModule.forFeature([
             Calendar,
             Route,
             StopTime,
             Trip,
             Stop,
+            ServerRestarts,
         ]),
+        PassportModule.register({
+            defaultStrategy: 'jwt',
+            property: 'jwtPayload',
+            session: false,
+        }),
     ],
     controllers: [AppController, RssController, StoptimesController],
-    providers: [AppService, RssService, StoptimesService, CronJobsService],
+    providers: [AppService, RssService, StoptimesService, CronJobsService, BasicStrategy],
 })
 export class AppModule {
 }
+
+export const BASIC_USERNAME: string = process.env.BASIC_USERNAME;
+export const BASIC_PASSWORD: string = process.env.BASIC_PASSWORD;
