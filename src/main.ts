@@ -3,8 +3,8 @@ import { AppModule } from './app.module';
 import * as fs from 'fs';
 
 const httpsOptions = {
-  key: fs.readFileSync('./server_key.pem'),
-  cert: fs.readFileSync('./server_cert.pem'),
+  key: fs.readFileSync(__dirname + '/server_key.pem'),
+  cert: fs.readFileSync(__dirname + '/server_cert.pem'),
 };
 
 async function bootstrap() {
